@@ -54,5 +54,5 @@ sudo bash -c 'echo "<?php phpinfo(); ?>" > /var/www/html/test.php'
 
 # Verify the installation
 echo "Verifying the installation..."
-curl "http://$IP_ADDRESS/test.php"
+wget "http://$IP_ADDRESS/test.php"
 echo "Installation complete!"
