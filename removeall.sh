@@ -13,7 +13,6 @@ sudo apt remove php libapache2-mod-php php-mysql -y
 sudo apt remove php-curl php-gd php-xml php-mbstring php-xmlrpc php-zip php-soap php-intl -y
 sudo apt autoremove -y
 sudo rm -rf /var/www/html
-sudo a2dismod rewrite
 sudo sed -i '/<Directory \/var\/www\/html>/d' /etc/apache2/sites-available/000-default.conf
 sudo sed -i '/  AllowOverride All/d' /etc/apache2/sites-available/000-default.conf
 sudo sed -i '/<\/Directory>/d' /etc/apache2/sites-available/000-default.conf
