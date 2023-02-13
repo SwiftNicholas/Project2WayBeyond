@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Read the MySQL root password from the file
-MYSQL_PASSWORD=$(cat ~/Desktop/mysqlpassword.txt)
+MYSQL_PASSWORD=$(cat ~/Desktop/mysqlpassword.txt | tr -d ' ')
 
 # Connect to the MySQL server as root
 mysql -u root -p$MYSQL_PASSWORD << EOF
