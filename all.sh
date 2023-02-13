@@ -1,4 +1,5 @@
 ##!/bin/bash
+sudo apt-get install scrot
 
 IP_ADDRESSES=()
 
@@ -22,7 +23,7 @@ echo "List of IP addresses:"
 for i in "${!IP_ADDRESSES[@]}"; do
   echo "$((i + 1))) ${IP_ADDRESSES[i]}"
 done
-
+scrot -e 'mv $f ~/Desktop/ipaddress.png'
 # Prompt the user to select an IP address
 read -p "Enter the number of the IP address you want to use: " selection
 
@@ -43,23 +44,28 @@ MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
 echo "$MYSQL_PASSWORD" > mysql_password.txt
 xdg-open mysql_password.txt
-
+scrot -e 'mv $f ~/Desktop/mysqlpassword.png'
 
 echo "Updating the OS and upgrading the packages to the latest version..."
 sudo apt-get update
+scrot -e scrot -e 'mv $f ./update.png'
 sudo apt upgrade
+scrot -e 'mv $f ./upgrade.png'
 read -p "Press any key to continue..."
 
 echo "Installing the Apache web server package..."
 sudo apt install apache2
+scrot -e 'mv $f ./apache.png'
 read -p "Press any key to continue..."
 
 echo "Opening up the firewall ports for TCP/80 and TCP/443..."
 sudo ufw allow in "Apache Full"
+scrot -e 'mv $f ./apache ports.png'
 read -p "Press any key to continue..."
 
 echo "Installing the MySQL Server package..."
 sudo apt install mysql-server
+scrot -e 'mv $f ./mysql.png'
 read -p "Press any key to continue..."
 
 echo "Setting the password for the MySQL root user..."
@@ -68,20 +74,25 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_P
 FLUSH PRIVILEGES;
 exit
 EOF
+scrot -e 'mv $f ./setsqlpassword.png'
 read -p "Press any key to continue..."
 
 echo "Enabling the Ubuntu universe repos..."
 sudo sh -c 'echo "deb http://archive.ubuntu.com/ubuntu bionic universe" >> /etc/apt/sources.list'
 sudo apt update
+scrot -e 'mv $f ./update.png'
 read -p "Press any key to continue..."
 
 echo "Installing the base PHP and MySQL libraries for PHP..."
 sudo apt install php libapache2-mod-php php-mysql
+scrot -e 'mv $f ./php-part1.png'
 sudo apt install php-curl php-gd php-xml php-mbstring php-xmlrpc php-zip php-soap php-intl
+scrot -e 'mv $f ./php-part2.png'
 read -p "Press any key to continue..."
 
 echo "Enabling Rewrites in Apache..."
 sudo a2enmod rewrite
+scrot -e 'mv $f ./apache-write-mod.png'
 sudo bash -c 'echo "<Directory /var/www/html>" >> /etc/apache2/sites-available/000-default.conf'
 sudo bash -c 'echo "  AllowOverride All" >> /etc/apache2/sites-available/000-default.conf'
 sudo bash -c 'echo "</Directory>" >> /etc/apache2/sites-available/000-default.conf'
@@ -89,6 +100,7 @@ read -p "Press any key to continue..."
 
 echo "Restarting Apache service..."
 service apache2 restart
+scrot -e 'mv $f ./apache-restart.png'
 read -p "Press any key to continue..."
 
 echo "Creating a test script /var/www/html/test.php..."
