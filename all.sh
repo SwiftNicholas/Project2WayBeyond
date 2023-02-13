@@ -4,6 +4,7 @@
 IP_ADDRESS=$(ip addr show | grep -Eo 'inet (addr:)?([0-9].){3}[0-9]' | grep -Eo '([0-9].){3}[0-9]' | grep -v '127.0.0.1')
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
+echo "IP_ADDRESS=$IP_ADDRESS"
 
 echo "Updating the OS and upgrading the packages to the latest version..."
 sudo apt-get update
