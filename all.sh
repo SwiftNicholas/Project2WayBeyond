@@ -41,6 +41,8 @@ echo "Selected IP address: $IP_ADDRESS"
 
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
+echo "$MYSQL_PASSWORD" > mysql_password.txt
+xdg-open mysql_password.txt
 
 
 echo "Updating the OS and upgrading the packages to the latest version..."
