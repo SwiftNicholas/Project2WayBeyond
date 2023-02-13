@@ -157,3 +157,35 @@ echo "deny from all" >> /var/www/html/.git/.htaccess
 echo "Restarting Apache2 service..."
 sudo service apache2 restart
 
+MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
+
+# Generate a new password for the WordPress user
+WORDPRESS_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
+# Connect to the MySQL server as root
+mysql -u root -p$MYSQL_ROOT_PASSWORD << EOF
+# Create the WordPress database
+CREATE DATABASE WordPressDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+# Create a user for the WordPress database
+CREATE USER 'WordPressUser'@'localhost' IDENTIFIED BY '$WORDPRESS_PASSWORD';
+# Grant privileges to the user for the WordPress database
+GRANT ALL ON WordPressDB.* TO 'WordPressUser'@'localhost';
+# Refresh the privileges
+flush privileges;
+# Exit the MySQL shell
+exit
+EOF
+
+# Update the wp-config.php file with the database information
+WP_CONFIG_FILE='/var/www/html/wp-config.php'
+sed -i "s/define('DB_NAME', '[^']*'/define('DB_NAME', 'WordPressDB'/" $WP_CONFIG_FILE
+sed -i "s/define('DB_USER', '[^']*'/define('DB_USER', 'WordPressUser'/" $WP_CONFIG_FILE
+sed -i "s/define('DB_PASSWORD', '[^']*'/define('DB_PASSWORD', '$WORDPRESS_PASSWORD'/" $WP_CONFIG_FILE
+
+The wp-config.php file has been updated with the database information."
+
+echo "WordPress database created successfully with the following details:
+Database Name: WordPressDB
+Username: WordPressUser
+Password: $WORDPRESS_PASSWORD"
+
