@@ -1,58 +1,64 @@
 #!/bin/bash
 
 # Variables
-IP_ADDRESS="10.10.229.12"
-MYSQL_PASSWORD="NVEGxke9mxCYpISdeMR7wF"
+ip addr show | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
+MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
 
-# Step 1: Log into Proxmox
-# Check that network IP address is 10.10.229.12
-# (use nmtui to verify that the IP address is correct).
-
-# Step 2 - Install Apache, MySQL, and PHP Packages
-
-# Update your OS and upgrade the packages to the latest version
+echo "Updating the OS and upgrading the packages to the latest version..."
 sudo apt-get update
 sudo apt upgrade
+read -p "Press any key to continue..."
 
-# Install the Apache web server package
+echo "Installing the Apache web server package..."
 sudo apt install apache2
+read -p "Press any key to continue..."
 
-# Open up the firewall ports so that TCP/80 and TCP/443 are allowed in.
-# This command will apply a firewall profile for Apache that is available
-# after the apache2 package has been installed.
+echo "Opening up the firewall ports for TCP/80 and TCP/443..."
 sudo ufw allow in "Apache Full"
+read -p "Press any key to continue..."
 
-# Install the MySQL Server package
+echo "Installing the MySQL Server package..."
 sudo apt install mysql-server
+read -p "Press any key to continue..."
 
-# Load the MySQL CLI.
+echo "Setting the password for the MySQL root user..."
 sudo mysql <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASSWORD';
 FLUSH PRIVILEGES;
 exit
 EOF
+read -p "Press any key to continue..."
 
-# Enable the Ubuntu universe repos. Some of the PHP packages required for WordPress
-# require this. Edit the /etc/apt/sources.list file and add universe to the end of
-# all lines, then save and exit. When finished, do an apt update to refresh the repo list.
+echo "Enabling the Ubuntu universe repos..."
 sudo sh -c 'echo "deb http://archive.ubuntu.com/ubuntu bionic universe" >> /etc/apt/sources.list'
 sudo apt update
+read -p "Press any key to continue..."
 
-# Install the base PHP and MySQL libraries for PHP.
-# Then, install additional PHP extensions required by the WordPress software.
+echo "Installing the base PHP and MySQL libraries for PHP..."
 sudo apt install php libapache2-mod-php php-mysql
 sudo apt install php-curl php-gd php-xml php-mbstring php-xmlrpc php-zip php-soap php-intl
+read -p "Press any key to continue..."
 
-# Enable Rewrites in Apache, so that WordPress can use Pretty (or clean) URLs.
+echo "Enabling Rewrites in Apache..."
 sudo a2enmod rewrite
+sudo bash -c 'echo "<Directory /var/www/html>" >> /etc/apache2/sites-available/000-default.conf'
+sudo bash -c 'echo "  AllowOverride All" >> /etc/apache2/sites-available/000-default.conf'
+sudo bash -c 'echo "</Directory>" >> /etc/apache2/sites-available/000-default.conf'
+read -p "Press any key to continue..."
 
-# Restart Apache service
+echo "Restarting Apache service..."
 service apache2 restart
+read -p "Press any key to continue..."
 
-# Create a test script /var/www/html/test.php
+echo "Creating a test script /var/www/html/test.php..."
 sudo bash -c 'echo "<?php phpinfo(); ?>" > /var/www/html/test.php'
+read -p "Press any key to continue..."
 
-# Verify the installation
 echo "Verifying the installation..."
-wget "http://$IP_ADDRESS/test.php"
+wget -qO- "http://$IP_ADDRESS/test.php"
 echo "Installation complete!"
+read -p "Press any key to continue..."
+
+echo "Opening the test.php in a web browser..."
+xdg-open "http://$IP_ADDRESS/test.php"
