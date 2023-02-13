@@ -20,4 +20,8 @@ sudo sed -i '/<\/Directory>/d' /etc/apache2/sites-available/000-default.conf
 sudo rm -rf /var/lib/mysql
 sudo rm -rf /etc/mysql
 
+sudo apt-get clean
+sudo dpkg --configure -a
+sudo apt-get upgrade
+
 echo "Completed Removal"
