@@ -1,9 +1,44 @@
-#!/bin/bash
+##!/bin/bash
 
-# Variables
-IP_ADDRESS=$(ip addr show eth0 | grep -Eo 'inet (addr:)?([0-9].){3}[0-9]' | grep -Eo '([0-9].){3}[0-9]' | grep -v '127.0.0.1')
+IP_ADDRESSES=()
+
+# Get all network interfaces
+interfaces=$(ip -o -4 addr show | awk '{print $2}')
+
+# Loop through all network interfaces
+for interface in $interfaces
+do
+  # Get the IP address of the interface
+  ip_address=$(ip -o -4 addr show "$interface" | awk '{print $4}' | cut -d/ -f1)
+
+  # Skip the loopback address
+  if [[ $ip_address != "127.0.0.1" ]]; then
+    IP_ADDRESSES+=("$ip_address")
+  fi
+done
+
+# Print the list of IP addresses
+echo "List of IP addresses:"
+for i in "${!IP_ADDRESSES[@]}"; do
+  echo "$((i + 1))) ${IP_ADDRESSES[i]}"
+done
+
+# Prompt the user to select an IP address
+read -p "Enter the number of the IP address you want to use: " selection
+
+# Validate the user input
+if [[ $selection -lt 1 || $selection -gt ${#IP_ADDRESSES[@]} ]]; then
+  echo "Invalid selection. Exiting script."
+  exit 1
+fi
+
+# Select the user-chosen IP address
+IP_ADDRESS=${IP_ADDRESSES[((selection - 1))]}
+
+# Print the selected IP address
+echo "Selected IP address: $IP_ADDRESS"
+
 echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
-echo "IP_ADDRESS=$IP_ADDRESS"
 
 echo "Updating the OS and upgrading the packages to the latest version..."
 sudo apt-get update
