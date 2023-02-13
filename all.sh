@@ -26,6 +26,7 @@ done
 # Prompt the user to select an IP address
 read -p "Enter the number of the IP address you want to use: " selection
 
+
 # Validate the user input
 if [[ $selection -lt 1 || $selection -gt ${#IP_ADDRESSES[@]} ]]; then
   echo "Invalid selection. Exiting script."
@@ -38,7 +39,9 @@ IP_ADDRESS=${IP_ADDRESSES[((selection - 1))]}
 # Print the selected IP address
 echo "Selected IP address: $IP_ADDRESS"
 
+MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 echo "MYSQL_PASSWORD=$MYSQL_PASSWORD"
+
 
 echo "Updating the OS and upgrading the packages to the latest version..."
 sudo apt-get update
