@@ -29,7 +29,7 @@ sudo chown www-data:www-data /var/www/html
 
 # Enable Apache overrides for /var/www path
 echo "Enabling Apache overrides for /var/www path..."
-sudo nano /etc/apache2/apache2.conf
+sudo sed -i '/<Directory \/var\/www>/,/<\/Directory>/s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
 # Create .htaccess file to secure the .git directory
 echo "Creating .htaccess file to secure the .git directory..."
