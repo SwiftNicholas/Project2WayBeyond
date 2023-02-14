@@ -2,7 +2,7 @@
 
 # Empty the /var/www/html directory
 sudo chown $USER:$USER /var/www/html/*
-sudo rm /var/www/html/*
+sudo rm -rf /var/www/html/*
 
 # Verify the html directory is empty
 echo "Verifying the html directory is empty..."
