@@ -177,6 +177,8 @@ exit
 EOF
 
 # Update the wp-config.php file with the database information
+
+sudo cp '/var/www/html/wp-config-example.php /var/www/html/wp-config.php
 WP_CONFIG_FILE='/var/www/html/wp-config.php'
 sed -i "s/define('DB_NAME', '[^']*'/define('DB_NAME', 'WordPressDB'/" $WP_CONFIG_FILE
 sed -i "s/define('DB_USER', '[^']*'/define('DB_USER', 'WordPressUser'/" $WP_CONFIG_FILE
