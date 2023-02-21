@@ -19,7 +19,13 @@ ls -la $WP_PATH | grep ^- | awk '{print $1}' | grep -o u=w
 # Create a tabular display of the file permissions
 echo "Creating tabular display of file permissions..."
 printf "%-30s %-10s %-10s %-10s %s\n" "FILENAME" "OWNER" "GROUP" "OTHER" "PERMISSIONS"
-ls -la $WP_PATH | grep ^- | awk '{printf "%-30s %-10s %-10s %-10s %s\n", $9, $3, $4, $1, $1; }'
+ls -la $WP_PATH | grep ^- | awk '{printf "%-30s %-10s %-10s %-10s %s\n", $9, $3, $4, $1, $1; }' | awk '{
+    gsub(/[-]/,"");  # Remove the '-' character from the permission string
+    gsub(/[r]/,"read, ",$4);  # Replace 'r' with 'read, '
+    gsub(/[w]/,"write, ",$4);  # Replace 'w' with 'write, '
+    gsub(/[x]/,"execute, ",$4);  # Replace 'x' with 'execute, '
+    print $1,$2,$3,$4;  # Print the modified columns
+}'
 
 # Convert permission letters to numbers and explain what they mean
 echo ""
