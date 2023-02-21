@@ -1,0 +1,1 @@
+ls -la $WP_PATH | grep ^- | awk '{print $1}' | grep -o u=w | wc -l
