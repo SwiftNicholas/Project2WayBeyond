@@ -16,18 +16,21 @@ ls -la $WP_PATH | grep ^- | awk '{print $1}'
 echo "Filtering for user write permissions..."
 ls -la $WP_PATH | grep ^- | awk '{print $1}' | grep -o u=w
 
-# Count the number of files with user write permissions
-echo "Counting files with user write permissions..."
-ls -la $WP_PATH | grep ^- | awk '{print $1}' | grep -o u=w | wc -l
+# Create a tabular display of the file permissions
+echo "Creating tabular display of file permissions..."
+printf "%-30s %-10s %-10s %-10s %s\n" "FILENAME" "OWNER" "GROUP" "OTHER" "PERMISSIONS"
+ls -la $WP_PATH | grep ^- | awk '{printf "%-30s %-10s %-10s %-10s %s\n", $9, $3, $4, $1, $1; }'
 
-# Write the output to a text file
-echo "Writing output to file..."
-ls -la $WP_PATH | grep ^- | awk '{print $1}' | grep -o u=w | wc -l > output.txt
-
-# Read the output from the text file and evaluate the conditional statement
-echo "Evaluating conditional statement..."
-if [[ $(cat output.txt) -ge 1 ]]; then
-    echo "There is at least one file with user write permissions in the directory."
-else
-    echo "There are no files with user write permissions in the directory."
-fi
+# Convert permission letters to numbers and explain what they mean
+echo ""
+echo "Permission values: "
+echo "-------------------"
+echo "r (read) = 4"
+echo "w (write) = 2"
+echo "x (execute) = 1"
+echo ""
+echo "For example, if the file permissions are 'rw-r--r--', the value would be calculated as follows:"
+echo "Owner permissions: (4 + 2) = 6"
+echo "Group permissions: 4"
+echo "Other permissions: 4"
+echo "Total value: 644"
