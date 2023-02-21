@@ -1,0 +1,25 @@
+total 248
+drwxr-xr-x  6 www-data www-data  4096 Feb 21 08:03 .
+drwxr-xr-x  3 root     root      4096 Feb 12 19:44 ..
+drwxr-xr-x  8 root     root      4096 Feb 14 12:57 .git
+-rw-r--r--  1 www-data www-data   523 Feb 21 08:03 .htaccess
+-rw-r--r--  1 www-data www-data   405 Feb 14 12:56 index.php
+-rw-r--r--  1 www-data www-data 19915 Feb 14 12:56 license.txt
+-rw-r--r--  1 www-data www-data  7390 Feb 14 12:56 readme.html
+-rw-r--r--  1 www-data www-data  7205 Feb 14 12:56 wp-activate.php
+drwxr-xr-x  9 www-data www-data  4096 Feb 14 12:56 wp-admin
+-rw-r--r--  1 www-data www-data   351 Feb 14 12:56 wp-blog-header.php
+-rw-r--r--  1 www-data www-data  2338 Feb 14 12:56 wp-comments-post.php
+-rw-rw-rw-  1 www-data www-data  3288 Feb 14 13:01 wp-config.php
+-rw-r--r--  1 www-data www-data  3001 Feb 14 12:56 wp-config-sample.php
+drwxr-xr-x  5 www-data www-data  4096 Feb 21 08:03 wp-content
+-rw-r--r--  1 www-data www-data  5536 Feb 14 12:56 wp-cron.php
+drwxr-xr-x 28 www-data www-data 12288 Feb 14 12:56 wp-includes
+-rw-r--r--  1 www-data www-data  2502 Feb 14 12:56 wp-links-opml.php
+-rw-r--r--  1 www-data www-data  3781 Feb 14 12:56 wp-load.php
+-rw-r--r--  1 www-data www-data 49312 Feb 14 12:56 wp-login.php
+-rw-r--r--  1 www-data www-data  8541 Feb 14 12:56 wp-mail.php
+-rw-r--r--  1 www-data www-data 25049 Feb 14 12:56 wp-settings.php
+-rw-r--r--  1 www-data www-data 34350 Feb 14 12:56 wp-signup.php
+-rw-r--r--  1 www-data www-data  4889 Feb 14 12:56 wp-trackback.php
+-rw-r--r--  1 www-data www-data  3238 Feb 14 12:56 xmlrpc.php
